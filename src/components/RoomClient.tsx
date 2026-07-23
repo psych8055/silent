@@ -33,7 +33,6 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
 
   const typingTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isTypingRef = useRef(false);
-  const selfTextareaRef = useRef<HTMLTextAreaElement>(null);
   const activeTheme = THEMES[themeIndex];
 
   useEffect(() => {
@@ -111,7 +110,6 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const value = e.target.value;
       setSelfText(value);
-      resizeTextarea(e.currentTarget);
 
       const socket = getSocket();
       socket.emit("text:update", { code, text: value });
@@ -128,10 +126,6 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
     },
     [code]
   );
-
-  useEffect(() => {
-    if (selfTextareaRef.current) resizeTextarea(selfTextareaRef.current);
-  }, [selfText]);
 
   async function handleShare() {
     const url = `${window.location.origin}/room/${code}`;
@@ -217,7 +211,6 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
           editable
           placeholder="You are live now."
           side="left"
-          textareaRef={selfTextareaRef}
         />
         <Panel
           value={peerText}
@@ -285,7 +278,6 @@ function Panel({
   presence = "online",
   typing = false,
   side,
-  textareaRef,
 }: {
   value: string;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -294,13 +286,12 @@ function Panel({
   presence?: PresenceState;
   typing?: boolean;
   side: "left" | "right";
-  textareaRef?: React.RefObject<HTMLTextAreaElement>;
 }) {
   const isDisconnectedPeer = !editable && presence === "disconnected";
 
   return (
     <section
-      className={`silent-room-panel silent-room-panel--${side} relative flex min-h-[38rem] flex-col justify-center overflow-hidden rounded-[3.2rem] border border-white/70 px-7 py-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition-all duration-500 sm:px-11 sm:py-12 md:min-h-0 ${
+      className={`silent-room-panel silent-room-panel--${side} relative flex min-h-[38rem] flex-col overflow-hidden rounded-[3.2rem] border border-white/70 px-7 py-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition-all duration-500 sm:px-11 sm:py-12 md:min-h-0 ${
         isDisconnectedPeer ? "opacity-85" : ""
       }`}
     >
@@ -322,22 +313,16 @@ function Panel({
       )}
 
       <textarea
-        ref={textareaRef}
         value={value}
         onChange={onChange}
         readOnly={!editable}
         placeholder=""
         spellCheck={false}
         autoFocus={editable}
-        className="thought-area no-scrollbar max-h-full min-h-0 w-full font-ui text-[clamp(2rem,3.65vw,4.05rem)] font-light leading-[1.08] text-white placeholder:text-white/60"
+        className="thought-area room-textarea no-scrollbar font-ui text-[clamp(2rem,3.65vw,4.05rem)] font-light leading-[1.08] text-white placeholder:text-white/60"
       />
     </section>
   );
-}
-
-function resizeTextarea(textarea: HTMLTextAreaElement) {
-  textarea.style.height = "auto";
-  textarea.style.height = `${textarea.scrollHeight}px`;
 }
 
 function Dot({ delay }: { delay: string }) {

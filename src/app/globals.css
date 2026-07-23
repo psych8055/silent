@@ -53,6 +53,15 @@ body {
     outline: none;
   }
 
+  .room-textarea {
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    padding-bottom: calc(50% - 0.54em);
+    padding-top: calc(50% - 0.54em);
+    width: 100%;
+  }
+
   .silent-room-shell {
     background:
       radial-gradient(90% 80% at 24% 100%, color-mix(in srgb, var(--theme-from) 44%, transparent), transparent 63%),
