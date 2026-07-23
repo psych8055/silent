@@ -215,7 +215,7 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
           value={selfText}
           onChange={handleChange}
           editable
-          placeholder=""
+          placeholder="You are live now."
           side="left"
           textareaRef={selfTextareaRef}
         />
@@ -226,10 +226,12 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
           typing={peerTyping}
           placeholder={
             status === "connecting"
-              ? ""
+              ? "Connecting..."
               : peerPresence === "online"
-              ? ""
-              : ""
+              ? peerTyping
+                ? "They are typing..."
+                : "They are live now."
+              : "Waiting for them to join."
           }
           side="right"
         />
@@ -310,12 +312,21 @@ function Panel({
         </span>
       )}
 
+      {!value && (
+        <p
+          aria-hidden="true"
+          className="pointer-events-none absolute left-7 right-7 top-1/2 -translate-y-1/2 font-ui text-[clamp(2rem,3.65vw,4.05rem)] font-light leading-[1.08] text-white/70 sm:left-11 sm:right-11"
+        >
+          {placeholder}
+        </p>
+      )}
+
       <textarea
         ref={textareaRef}
         value={value}
         onChange={onChange}
         readOnly={!editable}
-        placeholder={placeholder}
+        placeholder=""
         spellCheck={false}
         autoFocus={editable}
         className="thought-area no-scrollbar max-h-full min-h-0 w-full font-ui text-[clamp(2rem,3.65vw,4.05rem)] font-light leading-[1.08] text-white placeholder:text-white/60"
