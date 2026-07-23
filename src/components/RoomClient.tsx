@@ -151,9 +151,9 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
       <header className="grid min-h-[6.75rem] grid-cols-2 items-center px-7 pt-4 sm:px-10">
         <div className="flex items-center justify-between pr-8">
           <div className="flex items-center gap-5">
-            <span className="h-6 w-6 rounded-full bg-[radial-gradient(circle_at_35%_35%,#73d7ca,#d36d66_72%)] opacity-80 blur-[0.2px]" />
-            <span className="h-6 w-6 rounded-full bg-[radial-gradient(circle_at_35%_35%,#ffb0a5,#ef7656_72%)] opacity-80 blur-[0.2px]" />
-            <span className="h-6 w-6 rounded-full bg-[radial-gradient(circle_at_35%_35%,#99de74,#56b94d_72%)] opacity-80 blur-[0.2px]" />
+            <span className="h-6 w-6 rounded-full bg-[radial-gradient(circle_at_35%_35%,#90d2d0,#c95d37_76%)] opacity-85 blur-[0.2px]" />
+            <span className="h-6 w-6 rounded-full bg-[radial-gradient(circle_at_35%_35%,#ecc8ba,#c95d37_78%)] opacity-85 blur-[0.2px]" />
+            <span className="h-6 w-6 rounded-full bg-[radial-gradient(circle_at_35%_35%,#cbde8f,#5aaf47_78%)] opacity-85 blur-[0.2px]" />
           </div>
           <PresenceBadge presence="online" typing={false} tone="green" label="Live" />
         </div>
@@ -179,6 +179,7 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
           onChange={handleChange}
           editable
           placeholder=""
+          showLogo
         />
         <Panel
           value={peerText}
@@ -242,6 +243,7 @@ function Panel({
   placeholder,
   presence = "online",
   typing = false,
+  showLogo = false,
 }: {
   value: string;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -249,12 +251,13 @@ function Panel({
   placeholder: string;
   presence?: PresenceState;
   typing?: boolean;
+  showLogo?: boolean;
 }) {
   const isDisconnectedPeer = !editable && presence === "disconnected";
 
   return (
     <section
-      className={`relative flex min-h-[38rem] flex-col overflow-hidden rounded-[3.2rem] border border-white/70 bg-white/[0.06] px-7 py-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.22)] transition-all duration-500 sm:px-11 sm:py-12 md:min-h-0 ${
+      className={`relative flex min-h-[38rem] flex-col overflow-hidden rounded-[3.2rem] border border-white/70 bg-[#e9ddc4] px-7 py-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition-all duration-500 sm:px-11 sm:py-12 md:min-h-0 ${
         isDisconnectedPeer ? "opacity-85" : ""
       }`}
     >
@@ -273,8 +276,15 @@ function Panel({
         placeholder={placeholder}
         spellCheck={false}
         autoFocus={editable}
-        className="thought-area no-scrollbar flex-1 font-ui text-[clamp(2.4rem,4.2vw,4.65rem)] font-light leading-[1.08] text-white placeholder:text-white/60"
+        className="thought-area no-scrollbar flex-1 font-ui text-[clamp(2rem,3.65vw,4.05rem)] font-light leading-[1.08] text-white placeholder:text-white/60"
       />
+      {showLogo && (
+        <img
+          src="/kwite-logo.svg"
+          alt="Kwite"
+          className="pointer-events-none absolute bottom-10 right-10 h-9 w-auto"
+        />
+      )}
     </section>
   );
 }

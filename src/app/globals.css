@@ -45,6 +45,14 @@ body {
     font-style: italic;
   }
 
+  .thought-area:focus,
+  .thought-area:focus-visible {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+  }
+
   .silent-room-shell {
     background:
       radial-gradient(90% 80% at 24% 100%, rgba(246, 195, 72, 0.78), transparent 63%),
