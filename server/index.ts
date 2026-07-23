@@ -33,7 +33,15 @@ app.prepare().then(() => {
 
   registerSocketHandlers(io);
 
+  httpServer.on("error", (error) => {
+    console.error("Silent server failed to start:", error);
+    process.exit(1);
+  });
+
   httpServer.listen(port, () => {
     console.log(`> Silent is listening on http://${hostname}:${port}`);
   });
+}).catch((error) => {
+  console.error("Silent failed during Next.js preparation:", error);
+  process.exit(1);
 });
