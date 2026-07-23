@@ -32,8 +32,13 @@ app
       path: "/api/socket",
       cors: { origin: "*" },
     });
+    const legacyIo = new Server(httpServer, {
+      path: "/socket",
+      cors: { origin: "*" },
+    });
 
     registerSocketHandlers(io);
+    registerSocketHandlers(legacyIo);
 
     httpServer.on("error", (error) => {
       console.error("Silent server failed to start:", error);
