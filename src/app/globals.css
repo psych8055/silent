@@ -55,7 +55,9 @@ body {
 
   .silent-room-shell {
     background:
-      linear-gradient(90deg, var(--theme-from) 0 50%, var(--theme-to) 50% 100%);
+      radial-gradient(90% 80% at 24% 100%, color-mix(in srgb, var(--theme-from) 44%, transparent), transparent 63%),
+      radial-gradient(80% 75% at 78% 0%, color-mix(in srgb, var(--theme-to) 58%, transparent), transparent 66%),
+      linear-gradient(90deg, #d6d0c0 0 50%, #efe5c9 50% 100%);
     position: relative;
     --theme-from: #c95d37;
     --theme-to: #ecc8ba;
@@ -78,7 +80,7 @@ body {
   }
 
   .silent-room-panel {
-    background: var(--theme-to);
+    background-color: #e7dcc2;
   }
 
   .silent-room-panel::before {
@@ -94,12 +96,12 @@ body {
 
   .silent-room-panel--left {
     background:
-      linear-gradient(180deg, var(--theme-to), var(--theme-from));
+      linear-gradient(180deg, color-mix(in srgb, var(--theme-to) 28%, #e4dac4), color-mix(in srgb, var(--theme-from) 58%, #e8dcbf));
   }
 
   .silent-room-panel--right {
     background:
-      linear-gradient(180deg, var(--theme-from), var(--theme-to));
+      linear-gradient(180deg, color-mix(in srgb, var(--theme-from) 58%, #e8dcbf), color-mix(in srgb, var(--theme-to) 28%, #e4dac4));
   }
 
   .silent-room-panel > * {
