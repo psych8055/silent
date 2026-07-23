@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: radial-gradient(
+      120% 90% at 50% -10%,
+      rgba(110, 231, 219, 0.06),
+      transparent 60%
+    ),
+    radial-gradient(
+      120% 90% at 50% 110%,
+      rgba(185, 166, 255, 0.06),
+      transparent 60%
+    ),
+    #08090d;
+  min-height: 100dvh;
+}
+
+@layer components {
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .thought-area {
+    background: transparent;
+    resize: none;
+    outline: none;
+    border: none;
+    caret-color: currentColor;
+  }
+
+  .thought-area::placeholder {
+    color: rgba(255, 255, 255, 0.22);
+    font-style: italic;
+  }
+
+  /* hide scrollbar but keep it scrollable */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* visible keyboard focus, never suppressed */
+:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.35);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
