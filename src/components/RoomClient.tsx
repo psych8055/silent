@@ -7,6 +7,11 @@ import { normalizeRoomCode } from "@/lib/roomCode";
 import type { PeerSlot, PresenceState } from "@/lib/types";
 
 const TYPING_IDLE_MS = 900;
+const THEMES = [
+  { name: "blue rust", from: "#90d2d0", to: "#c95d37" },
+  { name: "clay blush", from: "#c95d37", to: "#ecc8ba" },
+  { name: "leaf green", from: "#cbde8f", to: "#5aaf47" },
+] as const;
 
 export function RoomClient({ rawCode }: { rawCode: string }) {
   const router = useRouter();
@@ -24,9 +29,11 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
   );
   const [peerTyping, setPeerTyping] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [themeIndex, setThemeIndex] = useState(1);
 
   const typingTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isTypingRef = useRef(false);
+  const activeTheme = THEMES[themeIndex];
 
   useEffect(() => {
     if (!code) {
@@ -147,16 +154,40 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
   }
 
   return (
-    <main className="silent-room-shell flex min-h-dvh flex-col overflow-hidden text-stone-500">
+    <main
+      className="silent-room-shell flex min-h-dvh flex-col overflow-hidden text-stone-500"
+      style={
+        {
+          "--theme-from": activeTheme.from,
+          "--theme-to": activeTheme.to,
+        } as React.CSSProperties
+      }
+    >
       <header className="grid min-h-[6.75rem] grid-cols-2 items-center px-7 pt-4 sm:px-10">
         <div className="flex items-center justify-between pr-8">
           <div className="flex items-center gap-5">
-            <span className="h-6 w-6 rounded-full bg-[radial-gradient(circle_at_35%_35%,#90d2d0,#c95d37_76%)] opacity-85 blur-[0.2px]" />
-            <span className="h-6 w-6 rounded-full bg-[radial-gradient(circle_at_35%_35%,#ecc8ba,#c95d37_78%)] opacity-85 blur-[0.2px]" />
-            <span className="h-6 w-6 rounded-full bg-[radial-gradient(circle_at_35%_35%,#cbde8f,#5aaf47_78%)] opacity-85 blur-[0.2px]" />
+            {THEMES.map((theme, index) => (
+              <button
+                key={theme.name}
+                type="button"
+                aria-label={`Use ${theme.name} theme`}
+                aria-pressed={themeIndex === index}
+                onClick={() => setThemeIndex(index)}
+                className="h-6 w-6 rounded-full opacity-85 blur-[0.2px] transition duration-200 hover:scale-105 focus:outline-none focus-visible:outline-none"
+                style={{
+                  background: `radial-gradient(circle at 35% 35%, ${theme.from}, ${theme.to} 78%)`,
+                }}
+              />
+            ))}
           </div>
           <PresenceBadge presence="online" typing={false} tone="green" label="Live" />
         </div>
+
+        <img
+          src="/kwite-logo.svg"
+          alt="Kwite"
+          className="pointer-events-none absolute left-1/2 top-5 h-8 w-auto -translate-x-1/2"
+        />
 
         <div className="flex items-center justify-end pl-8">
           <PresenceBadge
@@ -179,7 +210,7 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
           onChange={handleChange}
           editable
           placeholder=""
-          showLogo
+          side="left"
         />
         <Panel
           value={peerText}
@@ -193,6 +224,7 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
               ? ""
               : ""
           }
+          side="right"
         />
       </div>
 
@@ -243,7 +275,7 @@ function Panel({
   placeholder,
   presence = "online",
   typing = false,
-  showLogo = false,
+  side,
 }: {
   value: string;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -251,13 +283,13 @@ function Panel({
   placeholder: string;
   presence?: PresenceState;
   typing?: boolean;
-  showLogo?: boolean;
+  side: "left" | "right";
 }) {
   const isDisconnectedPeer = !editable && presence === "disconnected";
 
   return (
     <section
-      className={`relative flex min-h-[38rem] flex-col overflow-hidden rounded-[3.2rem] border border-white/70 bg-[#e9ddc4] px-7 py-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition-all duration-500 sm:px-11 sm:py-12 md:min-h-0 ${
+      className={`silent-room-panel silent-room-panel--${side} relative flex min-h-[38rem] flex-col overflow-hidden rounded-[3.2rem] border border-white/70 px-7 py-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition-all duration-500 sm:px-11 sm:py-12 md:min-h-0 ${
         isDisconnectedPeer ? "opacity-85" : ""
       }`}
     >
@@ -278,13 +310,6 @@ function Panel({
         autoFocus={editable}
         className="thought-area no-scrollbar flex-1 font-ui text-[clamp(2rem,3.65vw,4.05rem)] font-light leading-[1.08] text-white placeholder:text-white/60"
       />
-      {showLogo && (
-        <img
-          src="/kwite-logo.svg"
-          alt="Kwite"
-          className="pointer-events-none absolute bottom-10 right-10 h-9 w-auto"
-        />
-      )}
     </section>
   );
 }
