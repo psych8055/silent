@@ -27,9 +27,9 @@ const config: Config = {
         mist: "#8A8F9C",
       },
       fontFamily: {
-        display: ["var(--font-fraunces)", "serif"],
-        thought: ["var(--font-newsreader)", "serif"],
-        ui: ["var(--font-inter)", "sans-serif"],
+        display: ['"Google Sans Flex"', "sans-serif"],
+        thought: ['"Noto Serif Gujarati"', "serif"],
+        ui: ['"Google Sans Flex"', "sans-serif"],
       },
       keyframes: {
         breathe: {

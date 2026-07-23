@@ -1,26 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Newsreader, Inter } from "next/font/google";
 import "./globals.css";
-
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  variable: "--font-fraunces",
-  weight: ["300", "400", "500"],
-  style: ["normal", "italic"],
-});
-
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  variable: "--font-newsreader",
-  weight: ["300", "400", "500"],
-  style: ["normal", "italic"],
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  weight: ["400", "500", "600"],
-});
 
 export const metadata: Metadata = {
   title: "Silent",
@@ -35,9 +14,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body
-        className={`${fraunces.variable} ${newsreader.variable} ${inter.variable} bg-void text-white/90 font-ui antialiased`}
-      >
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Noto+Serif+Gujarati:wght@100..900&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="bg-void text-white/90 font-ui antialiased">
         {children}
       </body>
     </html>
