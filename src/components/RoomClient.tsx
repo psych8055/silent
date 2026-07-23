@@ -147,53 +147,58 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
   }
 
   return (
-    <main className="flex min-h-dvh flex-col">
-      <header className="flex items-center justify-between gap-4 px-5 py-4 sm:px-8">
-        <div className="flex items-center gap-3">
-          <span className="font-display text-xl italic text-white/90">
-            Silent
-          </span>
-          <span className="font-ui text-xs tracking-[0.2em] text-mist">
-            {code}
-          </span>
+    <main className="silent-room-shell flex min-h-dvh flex-col overflow-hidden text-stone-500">
+      <header className="grid min-h-[6.75rem] grid-cols-2 items-center px-7 pt-4 sm:px-10">
+        <div className="flex items-center justify-between pr-8">
+          <div className="flex items-center gap-5">
+            <span className="h-6 w-6 rounded-full bg-[radial-gradient(circle_at_35%_35%,#73d7ca,#d36d66_72%)] opacity-80 blur-[0.2px]" />
+            <span className="h-6 w-6 rounded-full bg-[radial-gradient(circle_at_35%_35%,#ffb0a5,#ef7656_72%)] opacity-80 blur-[0.2px]" />
+            <span className="h-6 w-6 rounded-full bg-[radial-gradient(circle_at_35%_35%,#99de74,#56b94d_72%)] opacity-80 blur-[0.2px]" />
+          </div>
+          <PresenceBadge presence="online" typing={false} tone="green" label="Live" />
         </div>
 
-        <div className="flex items-center gap-3">
-          <PresenceBadge presence={peerPresence} typing={peerTyping} />
+        <div className="flex items-center justify-end pl-8">
+          <PresenceBadge
+            presence={peerPresence}
+            typing={peerTyping}
+            tone="blue"
+          />
           <button
             onClick={handleShare}
-            className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-1.5 font-ui text-xs text-white/70 transition hover:bg-white/[0.08]"
+            className="sr-only"
           >
             {copied ? "Copied" : "Share link"}
           </button>
         </div>
       </header>
 
-      <div className="grid flex-1 grid-cols-1 gap-4 px-4 pb-4 sm:gap-5 sm:px-5 sm:pb-5 md:grid-cols-2">
+      <div className="grid flex-1 grid-cols-1 gap-8 px-8 pb-6 sm:px-10 md:grid-cols-2">
         <Panel
-          label="Your thoughts"
-          accent="self"
           value={selfText}
           onChange={handleChange}
           editable
-          placeholder="Start typing…"
+          placeholder=""
         />
         <Panel
-          label="Their thoughts"
-          accent="them"
           value={peerText}
           editable={false}
           presence={peerPresence}
           typing={peerTyping}
           placeholder={
             status === "connecting"
-              ? "Connecting…"
+              ? ""
               : peerPresence === "online"
-              ? "Waiting for them to begin…"
-              : "No one here yet."
+              ? ""
+              : ""
           }
         />
       </div>
+
+      <footer className="grid grid-cols-1 gap-2 px-8 pb-7 text-center font-ui text-sm text-stone-500/75 sm:px-10 md:grid-cols-2">
+        <p>Opensource platform</p>
+        <p>No chats archived.</p>
+      </footer>
     </main>
   );
 }
@@ -201,29 +206,36 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
 function PresenceBadge({
   presence,
   typing,
+  tone,
+  label,
 }: {
   presence: PresenceState;
   typing: boolean;
+  tone: "green" | "blue";
+  label?: string;
 }) {
-  const label = typing ? "Thinking" : presence === "online" ? "Online" : "Gone quiet";
+  const statusLabel =
+    label ?? (typing ? "Thinking" : presence === "online" ? "Live" : "Gone quiet");
   const dotColor =
-    presence === "online" ? "bg-mind-self" : "bg-white/25";
+    tone === "green"
+      ? "bg-lime-500"
+      : presence === "online"
+      ? "bg-sky-400"
+      : "bg-sky-400";
 
   return (
-    <div className="flex items-center gap-2 font-ui text-xs text-white/60">
+    <div className="flex items-center gap-2 font-ui text-sm text-stone-500/80">
       <span
         className={`h-1.5 w-1.5 rounded-full ${dotColor} ${
           presence === "online" ? "animate-pulseDot" : ""
         }`}
       />
-      {label}
+      {statusLabel}
     </div>
   );
 }
 
 function Panel({
-  label,
-  accent,
   value,
   onChange,
   editable,
@@ -231,8 +243,6 @@ function Panel({
   presence = "online",
   typing = false,
 }: {
-  label: string;
-  accent: "self" | "them";
   value: string;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   editable: boolean;
@@ -241,28 +251,20 @@ function Panel({
   typing?: boolean;
 }) {
   const isDisconnectedPeer = !editable && presence === "disconnected";
-  const accentText = accent === "self" ? "text-mind-self" : "text-other-them";
 
   return (
     <section
-      className={`glass-panel relative flex flex-col overflow-hidden rounded-[1.75rem] p-6 transition-all duration-500 sm:p-8 ${
-        isDisconnectedPeer ? "opacity-50 saturate-0" : ""
+      className={`relative flex min-h-[38rem] flex-col overflow-hidden rounded-[3.2rem] border border-white/70 bg-white/[0.06] px-7 py-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.22)] transition-all duration-500 sm:px-11 sm:py-12 md:min-h-0 ${
+        isDisconnectedPeer ? "opacity-85" : ""
       }`}
     >
-      <div className="mb-4 flex items-center justify-between">
-        <span
-          className={`font-ui text-[0.7rem] uppercase tracking-[0.25em] ${accentText}`}
-        >
-          {label}
+      {typing && (
+        <span className="absolute right-10 top-10 flex gap-1">
+          <Dot delay="0ms" />
+          <Dot delay="150ms" />
+          <Dot delay="300ms" />
         </span>
-        {typing && (
-          <span className="flex gap-1">
-            <Dot delay="0ms" />
-            <Dot delay="150ms" />
-            <Dot delay="300ms" />
-          </span>
-        )}
-      </div>
+      )}
 
       <textarea
         value={value}
@@ -271,7 +273,7 @@ function Panel({
         placeholder={placeholder}
         spellCheck={false}
         autoFocus={editable}
-        className="thought-area no-scrollbar flex-1 font-thought text-2xl italic leading-relaxed text-white/90 sm:text-[1.7rem]"
+        className="thought-area no-scrollbar flex-1 font-ui text-[clamp(2.4rem,4.2vw,4.65rem)] font-light leading-[1.08] text-white placeholder:text-white/60"
       />
     </section>
   );
@@ -298,14 +300,14 @@ function StatusScreen({
   onAction?: () => void;
 }) {
   return (
-    <main className="flex min-h-dvh items-center justify-center px-6">
-      <div className="glass-panel max-w-sm rounded-[2rem] px-8 py-10 text-center animate-driftIn">
-        <h1 className="font-display text-3xl italic text-white">{title}</h1>
-        <p className="mt-3 font-thought text-lg text-white/60">{subtitle}</p>
+    <main className="silent-room-shell flex min-h-dvh items-center justify-center px-6">
+      <div className="max-w-sm rounded-[2rem] border border-white/70 bg-white/[0.08] px-8 py-10 text-center animate-driftIn">
+        <h1 className="font-ui text-3xl font-light text-white">{title}</h1>
+        <p className="mt-3 font-ui text-lg text-stone-500">{subtitle}</p>
         {actionLabel && onAction && (
           <button
             onClick={onAction}
-            className="mt-8 w-full rounded-2xl bg-white/95 py-3 font-ui text-sm font-medium text-void hover:bg-white"
+            className="mt-8 w-full rounded-2xl bg-white/80 py-3 font-ui text-sm font-medium text-stone-700 hover:bg-white"
           >
             {actionLabel}
           </button>

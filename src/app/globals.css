@@ -43,6 +43,31 @@ body {
     font-style: italic;
   }
 
+  .silent-room-shell {
+    background:
+      radial-gradient(90% 80% at 24% 100%, rgba(246, 195, 72, 0.78), transparent 63%),
+      radial-gradient(80% 75% at 78% 0%, rgba(242, 181, 58, 0.9), transparent 66%),
+      linear-gradient(90deg, #d6d0c0 0 50%, #efe5c9 50% 100%);
+    position: relative;
+  }
+
+  .silent-room-shell::before {
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.22) 0 1px, transparent 1px),
+      radial-gradient(circle at 70% 65%, rgba(105, 84, 42, 0.12) 0 1px, transparent 1px);
+    background-size: 5px 5px, 7px 7px;
+    content: "";
+    inset: 0;
+    opacity: 0.34;
+    pointer-events: none;
+    position: absolute;
+  }
+
+  .silent-room-shell > * {
+    position: relative;
+    z-index: 1;
+  }
+
   /* hide scrollbar but keep it scrollable */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
