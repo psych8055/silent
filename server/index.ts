@@ -12,6 +12,17 @@ const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
   const httpServer = createServer((req, res) => {
+    if (req.url === "/healthz") {
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(
+        JSON.stringify({
+          ok: true,
+          server: "silent-custom-next-socketio",
+        })
+      );
+      return;
+    }
+
     handle(req, res);
   });
 
