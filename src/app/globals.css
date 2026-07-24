@@ -67,25 +67,14 @@ body {
   }
 
   .silent-room-shell {
-    background:
-      radial-gradient(circle at 10% 20%, rgba(144, 210, 208, 0.48) 0%, transparent 38%),
-      radial-gradient(circle at 90% 15%, rgba(90, 175, 71, 0.34) 0%, transparent 35%),
-      radial-gradient(circle at 15% 90%, rgba(201, 93, 55, 0.45) 0%, transparent 40%),
-      radial-gradient(circle at 85% 85%, rgba(236, 200, 186, 0.54) 0%, transparent 45%),
-      linear-gradient(135deg, #efe8dd 0%, #e7c56d 100%);
+    background: linear-gradient(135deg, #f4d98b 0%, #efc86b 100%);
     position: relative;
     --theme-from: #c95d37;
     --theme-to: #ecc8ba;
   }
 
   .silent-room-shell::before {
-    background:
-      radial-gradient(circle at 15% 15%, rgba(144, 210, 208, 0.55), transparent 45%),
-      radial-gradient(circle at 85% 15%, rgba(90, 175, 71, 0.45), transparent 40%),
-      radial-gradient(circle at 20% 90%, rgba(201, 93, 55, 0.45), transparent 45%),
-      radial-gradient(circle at 90% 80%, rgba(236, 200, 186, 0.55), transparent 45%);
     content: "";
-    filter: blur(70px);
     inset: 0;
     pointer-events: none;
     position: absolute;
