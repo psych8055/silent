@@ -162,6 +162,11 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
         } as React.CSSProperties
       }
     >
+      <div className="room-background-halves" aria-hidden="true">
+        <div className="room-background-half room-background-half--left" />
+        <div className="room-background-half room-background-half--right" />
+      </div>
+
       <header className="grid h-[7.5rem] shrink-0 grid-cols-[1fr_auto_1fr] items-start px-7 pt-6 sm:px-10">
         <div className="flex items-center justify-start">
           <div className="flex items-center gap-5">

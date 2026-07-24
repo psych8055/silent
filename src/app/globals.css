@@ -67,17 +67,10 @@ body {
   }
 
   .silent-room-shell {
-    background: linear-gradient(135deg, #f4d98b 0%, #efc86b 100%);
+    background: #e8e0d5;
     position: relative;
     --theme-from: #c95d37;
     --theme-to: #ecc8ba;
-  }
-
-  .silent-room-shell::before {
-    content: "";
-    inset: 0;
-    pointer-events: none;
-    position: absolute;
   }
 
   .silent-room-shell::after {
@@ -91,9 +84,35 @@ body {
     position: absolute;
   }
 
+  .room-background-halves {
+    display: grid;
+    grid-template-columns: 1fr;
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+  }
+
+  .room-background-half--left {
+    background: linear-gradient(to bottom, #e8e0d5 0%, #e4b75f 100%);
+  }
+
+  .room-background-half--right {
+    background: linear-gradient(to top, #e8e0d5 0%, #e4b75f 100%);
+  }
+
+  @media (min-width: 768px) {
+    .room-background-halves {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
   .silent-room-shell > * {
     position: relative;
     z-index: 1;
+  }
+
+  .silent-room-shell > .room-background-halves {
+    z-index: 0;
   }
 
   .silent-room-panel {
