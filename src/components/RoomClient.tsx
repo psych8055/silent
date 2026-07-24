@@ -107,8 +107,7 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
   }, [code]);
 
   const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      const value = e.target.value;
+    (value: string) => {
       setSelfText(value);
 
       const socket = getSocket();
@@ -280,7 +279,7 @@ function Panel({
   side,
 }: {
   value: string;
-  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onChange?: (value: string) => void;
   editable: boolean;
   placeholder: string;
   presence?: PresenceState;
@@ -288,26 +287,35 @@ function Panel({
   side: "left" | "right";
 }) {
   const isDisconnectedPeer = !editable && presence === "disconnected";
-  const textRef = useRef<HTMLTextAreaElement>(null);
+  const editorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const textarea = textRef.current;
-    if (!textarea) return;
+    const editor = editorRef.current;
+    if (!editor) return;
 
-    function updateOffset() {
-      if (!textarea) return;
-
-      textarea.style.setProperty("--text-offset", "0px");
-      const contentHeight = textarea.scrollHeight;
-      const availableHeight = textarea.clientHeight;
-      const offset = Math.max((availableHeight - contentHeight) / 2, 0);
-      textarea.style.setProperty("--text-offset", `${offset}px`);
+    if (!editable && editor.textContent !== value) {
+      editor.textContent = value;
     }
 
-    updateOffset();
-    window.addEventListener("resize", updateOffset);
-    return () => window.removeEventListener("resize", updateOffset);
-  }, [value]);
+    function updateOverflowState() {
+      if (!editor) return;
+      editor.dataset.overflowing = String(editor.scrollHeight > editor.clientHeight + 1);
+    }
+
+    updateOverflowState();
+    window.addEventListener("resize", updateOverflowState);
+    return () => window.removeEventListener("resize", updateOverflowState);
+  }, [editable, value]);
+
+  function handleInput(e: React.FormEvent<HTMLDivElement>) {
+    onChange?.(e.currentTarget.innerText);
+  }
+
+  function handlePaste(e: React.ClipboardEvent<HTMLDivElement>) {
+    e.preventDefault();
+    const text = e.clipboardData.getData("text/plain");
+    document.execCommand("insertText", false, text);
+  }
 
   return (
     <section
@@ -332,16 +340,20 @@ function Panel({
         </p>
       )}
 
-      <textarea
-        ref={textRef}
-        value={value}
-        onChange={onChange}
-        readOnly={!editable}
-        placeholder=""
+      <div
+        ref={editorRef}
+        contentEditable={editable}
+        suppressContentEditableWarning
+        role={editable ? "textbox" : "status"}
+        aria-label={editable ? "Your live text" : "Their live text"}
+        aria-multiline="true"
         spellCheck={false}
-        autoFocus={editable}
-        className="thought-area room-textarea no-scrollbar font-ui text-[clamp(2rem,3.65vw,4.05rem)] font-light leading-[1.08] text-white placeholder:text-white/60"
-      />
+        onInput={editable ? handleInput : undefined}
+        onPaste={editable ? handlePaste : undefined}
+        className="room-editor no-scrollbar font-ui text-[clamp(2rem,3.65vw,4.05rem)] font-light leading-[1.08] text-white"
+      >
+        {editable ? undefined : value}
+      </div>
     </section>
   );
 }
