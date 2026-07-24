@@ -68,21 +68,36 @@ body {
 
   .silent-room-shell {
     background:
-      radial-gradient(90% 80% at 24% 100%, color-mix(in srgb, var(--theme-from) 44%, transparent), transparent 63%),
-      radial-gradient(80% 75% at 78% 0%, color-mix(in srgb, var(--theme-to) 58%, transparent), transparent 66%),
-      linear-gradient(90deg, #d6d0c0 0 50%, #efe5c9 50% 100%);
+      radial-gradient(circle at 10% 20%, rgba(144, 210, 208, 0.48) 0%, transparent 38%),
+      radial-gradient(circle at 90% 15%, rgba(90, 175, 71, 0.34) 0%, transparent 35%),
+      radial-gradient(circle at 15% 90%, rgba(201, 93, 55, 0.45) 0%, transparent 40%),
+      radial-gradient(circle at 85% 85%, rgba(236, 200, 186, 0.54) 0%, transparent 45%),
+      linear-gradient(135deg, #efe8dd 0%, #e7c56d 100%);
     position: relative;
     --theme-from: #c95d37;
     --theme-to: #ecc8ba;
   }
 
   .silent-room-shell::before {
+    background:
+      radial-gradient(circle at 15% 15%, rgba(144, 210, 208, 0.55), transparent 45%),
+      radial-gradient(circle at 85% 15%, rgba(90, 175, 71, 0.45), transparent 40%),
+      radial-gradient(circle at 20% 90%, rgba(201, 93, 55, 0.45), transparent 45%),
+      radial-gradient(circle at 90% 80%, rgba(236, 200, 186, 0.55), transparent 45%);
+    content: "";
+    filter: blur(70px);
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+  }
+
+  .silent-room-shell::after {
     background-image: url("/kwite-grain.png");
     background-size: 720px 360px;
     content: "";
     inset: 0;
-    mix-blend-mode: overlay;
-    opacity: 0.18;
+    mix-blend-mode: soft-light;
+    opacity: 0.07;
     pointer-events: none;
     position: absolute;
   }
@@ -93,9 +108,9 @@ body {
   }
 
   .silent-room-panel {
-    backdrop-filter: blur(20px) saturate(1.08);
-    -webkit-backdrop-filter: blur(20px) saturate(1.08);
-    background-color: transparent;
+    backdrop-filter: blur(18px) saturate(1.05);
+    -webkit-backdrop-filter: blur(18px) saturate(1.05);
+    background: rgba(255, 255, 255, 0.08);
   }
 
   .silent-room-panel::before {
@@ -107,18 +122,6 @@ body {
     opacity: 0.1;
     pointer-events: none;
     position: absolute;
-  }
-
-  .silent-room-panel--left {
-    background:
-      linear-gradient(180deg, color-mix(in srgb, var(--theme-to) 34%, transparent), color-mix(in srgb, var(--theme-from) 62%, transparent)),
-      rgba(255, 255, 255, 0.08);
-  }
-
-  .silent-room-panel--right {
-    background:
-      linear-gradient(180deg, color-mix(in srgb, var(--theme-from) 62%, transparent), color-mix(in srgb, var(--theme-to) 34%, transparent)),
-      rgba(255, 255, 255, 0.08);
   }
 
   .silent-room-panel > * {
