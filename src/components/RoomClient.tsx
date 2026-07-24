@@ -155,7 +155,7 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
 
   return (
     <main
-      className="silent-room-shell flex min-h-dvh flex-col overflow-hidden text-stone-500"
+      className="silent-room-shell flex h-dvh max-h-dvh flex-col overflow-hidden text-stone-500"
       style={
         {
           "--theme-from": activeTheme.from,
@@ -163,7 +163,7 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
         } as React.CSSProperties
       }
     >
-      <header className="grid min-h-[7.75rem] grid-cols-[1fr_auto_1fr] items-start px-7 pt-6 sm:px-10">
+      <header className="grid h-[7.5rem] shrink-0 grid-cols-[1fr_auto_1fr] items-start px-7 pt-6 sm:px-10">
         <div className="flex items-center justify-start">
           <div className="flex items-center gap-5">
             {THEMES.map((theme, index) => (
@@ -204,7 +204,7 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
         </div>
       </header>
 
-      <div className="grid flex-1 grid-cols-1 gap-8 px-8 pb-6 sm:px-10 md:grid-cols-2">
+      <div className="grid min-h-0 flex-1 grid-cols-1 grid-rows-2 gap-5 px-5 pb-4 sm:px-8 md:grid-cols-2 md:grid-rows-1 md:gap-8 md:px-10 md:pb-6">
         <Panel
           value={selfText}
           onChange={handleChange}
@@ -230,7 +230,7 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
         />
       </div>
 
-      <footer className="grid grid-cols-1 gap-2 px-8 pb-7 text-center font-ui text-sm text-stone-500/75 sm:px-10 md:grid-cols-2">
+      <footer className="grid h-[3.25rem] shrink-0 grid-cols-1 gap-2 px-8 pb-4 text-center font-ui text-sm text-stone-500/75 sm:px-10 md:grid-cols-2">
         <p>Opensource platform</p>
         <p>No chats archived.</p>
       </footer>
@@ -288,10 +288,30 @@ function Panel({
   side: "left" | "right";
 }) {
   const isDisconnectedPeer = !editable && presence === "disconnected";
+  const textRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const textarea = textRef.current;
+    if (!textarea) return;
+
+    function updateOffset() {
+      if (!textarea) return;
+
+      textarea.style.setProperty("--text-offset", "0px");
+      const contentHeight = textarea.scrollHeight;
+      const availableHeight = textarea.clientHeight;
+      const offset = Math.max((availableHeight - contentHeight) / 2, 0);
+      textarea.style.setProperty("--text-offset", `${offset}px`);
+    }
+
+    updateOffset();
+    window.addEventListener("resize", updateOffset);
+    return () => window.removeEventListener("resize", updateOffset);
+  }, [value]);
 
   return (
     <section
-      className={`silent-room-panel silent-room-panel--${side} relative flex min-h-[38rem] flex-col overflow-hidden rounded-[3.2rem] border border-white/70 px-7 py-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition-all duration-500 sm:px-11 sm:py-12 md:min-h-0 ${
+      className={`silent-room-panel silent-room-panel--${side} relative flex h-full min-h-0 flex-col overflow-hidden rounded-[2.4rem] border border-white/65 px-7 py-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.46),0_20px_80px_rgba(84,64,30,0.08)] transition-all duration-500 sm:px-11 sm:py-10 md:rounded-[3.2rem] ${
         isDisconnectedPeer ? "opacity-85" : ""
       }`}
     >
@@ -313,6 +333,7 @@ function Panel({
       )}
 
       <textarea
+        ref={textRef}
         value={value}
         onChange={onChange}
         readOnly={!editable}
@@ -346,7 +367,7 @@ function StatusScreen({
   onAction?: () => void;
 }) {
   return (
-    <main className="silent-room-shell flex min-h-dvh items-center justify-center px-6">
+    <main className="silent-room-shell flex min-h-dvh max-h-[100dvh] items-center justify-center px-6">
       <div className="max-w-sm rounded-[2rem] border border-white/70 bg-white/[0.08] px-8 py-10 text-center animate-driftIn">
         <h1 className="font-ui text-3xl font-light text-white">{title}</h1>
         <p className="mt-3 font-ui text-lg text-stone-500">{subtitle}</p>
