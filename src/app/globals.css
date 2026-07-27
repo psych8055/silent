@@ -133,10 +133,11 @@ body {
   }
 
   .silent-room-shell {
-    background: #d5d2cd;
+    background: var(--theme-from);
     position: relative;
-    --theme-from: #c95d37;
-    --theme-to: #ecc8ba;
+    --theme-from: #d5d2cd;
+    --theme-to: #edb753;
+    --room-muted: #151310;
   }
 
   .silent-room-shell::after {
@@ -159,11 +160,11 @@ body {
   }
 
   .room-background-half--left {
-    background: linear-gradient(to bottom, #d5d2cd 0%, #edb753 100%);
+    background: linear-gradient(to bottom, var(--theme-from) 0%, var(--theme-to) 100%);
   }
 
   .room-background-half--right {
-    background: linear-gradient(to top, #d5d2cd 0%, #edb753 100%);
+    background: linear-gradient(to top, var(--theme-from) 0%, var(--theme-to) 100%);
   }
 
   @media (min-width: 768px) {

@@ -8,9 +8,9 @@ import type { PeerSlot, PresenceState } from "@/lib/types";
 
 const TYPING_IDLE_MS = 900;
 const THEMES = [
-  { name: "blue rust", from: "#90d2d0", to: "#c95d37" },
-  { name: "clay blush", from: "#c95d37", to: "#ecc8ba" },
-  { name: "leaf green", from: "#cbde8f", to: "#5aaf47" },
+  { name: "pastel gold", from: "#d5d2cd", to: "#edb753" },
+  { name: "pastel green", from: "#cbde8f", to: "#5aaf47" },
+  { name: "pastel clay", from: "#c95d37", to: "#ecc8ba" },
 ] as const;
 
 export function RoomClient({ rawCode }: { rawCode: string }) {
@@ -29,7 +29,7 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
   );
   const [peerTyping, setPeerTyping] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [themeIndex, setThemeIndex] = useState(1);
+  const [themeIndex, setThemeIndex] = useState(0);
 
   const typingTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isTypingRef = useRef(false);
@@ -168,7 +168,7 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
 
   return (
     <main
-      className="silent-room-shell flex h-dvh max-h-dvh flex-col overflow-hidden text-stone-500"
+      className="silent-room-shell flex h-dvh max-h-dvh flex-col overflow-hidden text-[color:var(--room-muted)]"
       style={
         {
           "--theme-from": activeTheme.from,
@@ -191,9 +191,11 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
                 aria-label={`Use ${theme.name} theme`}
                 aria-pressed={themeIndex === index}
                 onClick={() => setThemeIndex(index)}
-                className="h-6 w-6 rounded-full opacity-85 blur-[0.2px] transition duration-200 hover:scale-105 focus:outline-none focus-visible:outline-none"
+                className={`h-6 w-6 rounded-full opacity-85 blur-[0.2px] transition duration-200 hover:scale-105 focus:outline-none focus-visible:outline-none ${
+                  themeIndex === index ? "ring-2 ring-white/70 ring-offset-2 ring-offset-transparent" : ""
+                }`}
                 style={{
-                  background: `radial-gradient(circle at 35% 35%, ${theme.from}, ${theme.to} 78%)`,
+                  background: `linear-gradient(180deg, ${theme.from} 0%, ${theme.to} 100%)`,
                 }}
               />
             ))}
@@ -256,7 +258,7 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
         />
       </div>
 
-      <footer className="grid h-[3.25rem] shrink-0 grid-cols-1 gap-2 px-8 pb-4 text-center font-ui text-sm text-stone-500/75 sm:px-10 md:grid-cols-2">
+      <footer className="grid h-[3.25rem] shrink-0 grid-cols-1 gap-2 px-8 pb-4 text-center font-ui text-sm text-[color:var(--room-muted)] sm:px-10 md:grid-cols-2">
         <p>Open Source Platform</p>
         <p>{roomStatusText}</p>
       </footer>
@@ -285,7 +287,7 @@ function PresenceBadge({
       : "bg-stone-400";
 
   return (
-    <div className="inline-flex min-w-0 items-center gap-1.5 whitespace-nowrap font-ui text-xs text-stone-500/80 sm:gap-2 sm:text-sm">
+    <div className="inline-flex min-w-0 items-center gap-1.5 whitespace-nowrap font-ui text-xs text-[color:var(--room-muted)] sm:gap-2 sm:text-sm">
       <span
         className={`h-1.5 w-1.5 shrink-0 rounded-full ${dotColor} ${
           presence === "online" ? "animate-pulseDot" : ""
