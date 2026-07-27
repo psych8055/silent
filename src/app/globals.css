@@ -66,8 +66,24 @@ body {
     align-items: flex-start;
   }
 
+  .room-editor--empty {
+    height: auto;
+    left: 0rem;
+    min-height: 1.08em;
+    position: absolute;
+    right: 1.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: auto;
+  }
+
+  @media (min-width: 640px) {
+    .room-editor--empty {
+    }
+  }
+
   .silent-room-shell {
-    background: #e8e0d5;
+    background: #d5d2cd;
     position: relative;
     --theme-from: #c95d37;
     --theme-to: #ecc8ba;
@@ -89,15 +105,15 @@ body {
     grid-template-columns: 1fr;
     inset: 0;
     pointer-events: none;
-    position: absolute;
+    position: absolute !important;
   }
 
   .room-background-half--left {
-    background: linear-gradient(to bottom, #e8e0d5 0%, #e4b75f 100%);
+    background: linear-gradient(to bottom, #d5d2cd 0%, #edb753 100%);
   }
 
   .room-background-half--right {
-    background: linear-gradient(to top, #e8e0d5 0%, #e4b75f 100%);
+    background: linear-gradient(to top, #d5d2cd 0%, #edb753 100%);
   }
 
   @media (min-width: 768px) {

@@ -322,11 +322,19 @@ function Panel({
     document.execCommand("insertText", false, text);
   }
 
+  function handlePanelMouseDown(e: React.MouseEvent<HTMLElement>) {
+    if (!editable || value || e.target !== e.currentTarget) return;
+
+    e.preventDefault();
+    editorRef.current?.focus();
+  }
+
   return (
     <section
       className={`silent-room-panel silent-room-panel--${side} relative flex h-full min-h-0 flex-col overflow-hidden rounded-[2.4rem] border border-white/65 px-7 py-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.46),0_20px_80px_rgba(84,64,30,0.08)] transition-all duration-500 sm:px-11 sm:py-10 md:rounded-[3.2rem] ${
         isDisconnectedPeer ? "opacity-85" : ""
       }`}
+      onMouseDown={handlePanelMouseDown}
     >
       {typing && (
         <span className="absolute right-10 top-10 flex gap-1">
@@ -355,7 +363,9 @@ function Panel({
         spellCheck={false}
         onInput={editable ? handleInput : undefined}
         onPaste={editable ? handlePaste : undefined}
-        className="room-editor no-scrollbar font-ui text-[clamp(2rem,3.65vw,4.05rem)] font-light leading-[1.08] text-white"
+        className={`room-editor no-scrollbar font-ui text-[clamp(2rem,3.65vw,4.05rem)] font-light leading-[1.08] text-white ${
+          editable && !value ? "room-editor--empty" : ""
+        }`}
       >
         {editable ? undefined : value}
       </div>
