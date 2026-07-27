@@ -34,6 +34,20 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
   const typingTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isTypingRef = useRef(false);
   const activeTheme = THEMES[themeIndex];
+  const peerStatusLabel =
+    status === "connecting"
+      ? "Connecting"
+      : peerPresence === "online"
+      ? peerTyping
+        ? "They are typing"
+        : "They are live"
+      : "Gone quiet";
+  const roomStatusText =
+    status === "connecting"
+      ? "Joining room..."
+      : peerPresence === "online"
+      ? "Both people are live."
+      : "Waiting for the other person.";
 
   useEffect(() => {
     if (!code) {
@@ -193,11 +207,17 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
         />
 
         <div className="flex items-center justify-end gap-7">
-          <PresenceBadge presence="online" typing={false} tone="green" label="Live" />
+          <PresenceBadge
+            presence="online"
+            typing={false}
+            tone="green"
+            label="You are live"
+          />
           <PresenceBadge
             presence={peerPresence}
             typing={peerTyping}
             tone="blue"
+            label={peerStatusLabel}
           />
           <button
             onClick={handleShare}
@@ -236,7 +256,7 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
 
       <footer className="grid h-[3.25rem] shrink-0 grid-cols-1 gap-2 px-8 pb-4 text-center font-ui text-sm text-stone-500/75 sm:px-10 md:grid-cols-2">
         <p>Opensource platform</p>
-        <p>No chats archived.</p>
+        <p>{roomStatusText}</p>
       </footer>
     </main>
   );

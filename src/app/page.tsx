@@ -32,11 +32,11 @@ export default function HomePage() {
             no messages · no history
           </p>
 
-          <h1 className="mt-4 font-display text-5xl italic font-light tracking-tight text-white sm:text-6xl">
-            Silent
+          <h1 className="mt-4 font-ui text-5xl font-light text-white sm:text-6xl">
+            Shhh...
           </h1>
 
-          <p className="mt-5 font-thought text-lg leading-relaxed text-white/60">
+          <p className="mt-5 font-ui text-lg font-light leading-relaxed text-white/60">
             Two people, one room, watching each other think — one keystroke
             at a time. Nothing is saved. When you leave, it&apos;s gone.
           </p>
