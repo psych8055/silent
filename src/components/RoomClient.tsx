@@ -44,10 +44,10 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
       : "Gone quiet";
   const roomStatusText =
     status === "connecting"
-      ? "Joining room..."
+      ? "Copyright © 2026 Kwite®"
       : peerPresence === "online"
-      ? "Both people are live."
-      : "Waiting for the other person.";
+      ? "Copyright © 2026 Kwite®"
+      : "Copyright © 2026 Kwite®";
 
   useEffect(() => {
     if (!code) {
@@ -257,7 +257,7 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
       </div>
 
       <footer className="grid h-[3.25rem] shrink-0 grid-cols-1 gap-2 px-8 pb-4 text-center font-ui text-sm text-stone-500/75 sm:px-10 md:grid-cols-2">
-        <p>Opensource platform</p>
+        <p>Open Source Platform</p>
         <p>{roomStatusText}</p>
       </footer>
     </main>
