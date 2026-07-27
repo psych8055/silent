@@ -77,11 +77,6 @@ body {
     width: auto;
   }
 
-  @media (min-width: 640px) {
-    .room-editor--empty {
-    }
-  }
-
   .silent-room-shell {
     background: #d5d2cd;
     position: relative;

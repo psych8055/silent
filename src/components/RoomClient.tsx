@@ -39,8 +39,8 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
       ? "Connecting"
       : peerPresence === "online"
       ? peerTyping
-        ? "They are typing"
-        : "They are live"
+        ? "Typing"
+        : "Other: Live"
       : "Gone quiet";
   const roomStatusText =
     status === "connecting"
@@ -181,7 +181,7 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
         <div className="room-background-half room-background-half--right" />
       </div>
 
-      <header className="grid h-[7.5rem] shrink-0 grid-cols-[1fr_auto_1fr] items-start px-7 pt-6 sm:px-10">
+      <header className="grid min-h-[6rem] shrink-0 grid-cols-[1fr_auto] items-start gap-x-4 gap-y-3 px-5 pb-3 pt-5 sm:px-8 md:h-[7.5rem] md:grid-cols-[1fr_auto_1fr] md:px-10 md:pb-0 md:pt-6">
         <div className="flex items-center justify-start">
           <div className="flex items-center gap-5">
             {THEMES.map((theme, index) => (
@@ -206,12 +206,12 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
           className="pointer-events-none h-8 w-auto"
         />
 
-        <div className="flex items-center justify-end gap-7">
+        <div className="col-span-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 md:col-span-1 md:justify-end md:gap-7">
           <PresenceBadge
             presence="online"
             typing={false}
             tone="green"
-            label="You are live"
+            label="You: Live"
           />
           <PresenceBadge
             presence={peerPresence}
@@ -235,6 +235,7 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
           editable
           placeholder="You are live now."
           side="left"
+          className="order-2 md:order-1"
         />
         <Panel
           value={peerText}
@@ -251,6 +252,7 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
               : "Waiting for them to join."
           }
           side="right"
+          className="order-1 md:order-2"
         />
       </div>
 
@@ -280,12 +282,12 @@ function PresenceBadge({
       ? "bg-lime-500"
       : presence === "online"
       ? "bg-sky-400"
-      : "bg-sky-400";
+      : "bg-stone-400";
 
   return (
-    <div className="flex items-center gap-2 font-ui text-sm text-stone-500/80">
+    <div className="inline-flex min-w-0 items-center gap-1.5 whitespace-nowrap font-ui text-xs text-stone-500/80 sm:gap-2 sm:text-sm">
       <span
-        className={`h-1.5 w-1.5 rounded-full ${dotColor} ${
+        className={`h-1.5 w-1.5 shrink-0 rounded-full ${dotColor} ${
           presence === "online" ? "animate-pulseDot" : ""
         }`}
       />
@@ -302,6 +304,7 @@ function Panel({
   presence = "online",
   typing = false,
   side,
+  className = "",
 }: {
   value: string;
   onChange?: (value: string) => void;
@@ -310,6 +313,7 @@ function Panel({
   presence?: PresenceState;
   typing?: boolean;
   side: "left" | "right";
+  className?: string;
 }) {
   const isDisconnectedPeer = !editable && presence === "disconnected";
   const editorRef = useRef<HTMLDivElement>(null);
@@ -353,7 +357,7 @@ function Panel({
     <section
       className={`silent-room-panel silent-room-panel--${side} relative flex h-full min-h-0 flex-col overflow-hidden rounded-[2.4rem] border border-white/65 px-7 py-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.46),0_20px_80px_rgba(84,64,30,0.08)] transition-all duration-500 sm:px-11 sm:py-10 md:rounded-[3.2rem] ${
         isDisconnectedPeer ? "opacity-85" : ""
-      }`}
+      } ${className}`}
       onMouseDown={handlePanelMouseDown}
     >
       {typing && (
