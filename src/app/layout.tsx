@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Silent",
+  title: "Shhh...",
   description:
-    "A live, ephemeral conversation. No messages, no history — just two people watching each other think.",
+    "You, me. Nobody else.",
 };
 
 export default function RootLayout({
