@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Shhh...",
   description:
-    "You, me. Nobody else.",
+    "Live conversation. Zero history.",
 };
 
 export default function RootLayout({
