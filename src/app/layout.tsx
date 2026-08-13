@@ -3,8 +3,25 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Shhh...",
-  description:
-    "Live conversation. Zero history.",
+  description: "Live conversation. Zero history.",
+  openGraph: {
+    title: "Shhh...",
+    description: "Live conversation. Zero history.",
+    images: [
+      {
+        url: "https://s3.nyuct.com/kwite.webp",
+        width: 1200,
+        height: 630,
+        alt: "Shhh...",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Shhh...",
+    description: "Live conversation. Zero history.",
+    images: ["https://s3.nyuct.com/kwite.webp"],
+  },
 };
 
 export default function RootLayout({
