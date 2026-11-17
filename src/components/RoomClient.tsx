@@ -42,12 +42,7 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
         ? "Typing"
         : "Other: Live"
       : "Gone quiet";
-  const roomStatusText =
-    status === "connecting"
-      ? "Copyright © 2026 Kwite®"
-      : peerPresence === "online"
-      ? "Copyright © 2026 Kwite®"
-      : "Copyright © 2026 Kwite®";
+  const roomStatusText = "Copyright © 2026 kwite®";
 
   useEffect(() => {
     if (!code) {
@@ -221,7 +216,7 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
                 : "Copy invite link"
             }
             aria-live="polite"
-            className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-[#0b57d0] px-4 py-2.5 font-ui text-xs font-medium text-white shadow-[0_3px_10px_rgba(11,87,208,0.22)] transition hover:bg-[#0842a0] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-45 disabled:shadow-none disabled:hover:bg-[#0b57d0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0b57d0] sm:text-sm"
+            className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-white/60 bg-white/25 px-4 py-2.5 font-ui text-xs font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_3px_10px_rgba(255,255,255,0.12)] backdrop-blur-md transition hover:bg-white/35 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-45 disabled:shadow-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:text-sm"
           >
             <LinkIcon />
             {copied ? "Link copied" : "Invite link"}
@@ -269,7 +264,7 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
         />
       </div>
 
-      <footer className="grid h-[3.25rem] shrink-0 grid-cols-1 gap-2 px-8 pb-4 text-center font-ui text-sm text-[color:var(--room-muted)] sm:px-10 md:grid-cols-2">
+      <footer className="grid h-[3.25rem] shrink-0 grid-cols-1 gap-2 px-8 pb-4 text-center font-ui text-sm text-white sm:px-10 md:grid-cols-2">
         <p>Open Source Platform</p>
         <p>{roomStatusText}</p>
       </footer>
@@ -298,7 +293,7 @@ function PresenceBadge({
       : "bg-stone-400";
 
   return (
-    <div className="inline-flex min-w-0 items-center gap-1.5 whitespace-nowrap font-ui text-xs text-[color:var(--room-muted)] sm:gap-2 sm:text-sm">
+    <div className="inline-flex min-w-0 items-center gap-1.5 whitespace-nowrap font-ui text-xs text-white sm:gap-2 sm:text-sm">
       <span
         className={`h-1.5 w-1.5 shrink-0 rounded-full ${dotColor} ${
           presence === "online" ? "animate-pulseDot" : ""
