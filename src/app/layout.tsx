@@ -4,6 +4,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Shhh...",
   description: "Live conversation. Zero history.",
+  icons: {
+    icon: "/favicon.svg",
+  },
   openGraph: {
     title: "Shhh...",
     description: "Live conversation. Zero history.",
