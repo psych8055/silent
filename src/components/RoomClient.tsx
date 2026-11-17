@@ -208,7 +208,24 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
           className="pointer-events-none h-8 w-auto"
         />
 
-        <div className="col-span-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 md:col-span-1 md:justify-end md:gap-7">
+        <div className="col-span-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 md:col-span-1 md:justify-end md:gap-5">
+          <button
+            type="button"
+            onClick={handleShare}
+            disabled={peerPresence === "online"}
+            aria-label={
+              peerPresence === "online"
+                ? "Invite link unavailable while someone is here"
+                : copied
+                ? "Invite link copied"
+                : "Copy invite link"
+            }
+            aria-live="polite"
+            className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-[#0b57d0] px-4 py-2.5 font-ui text-xs font-medium text-white shadow-[0_3px_10px_rgba(11,87,208,0.22)] transition hover:bg-[#0842a0] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-45 disabled:shadow-none disabled:hover:bg-[#0b57d0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0b57d0] sm:text-sm"
+          >
+            <LinkIcon />
+            {copied ? "Link copied" : "Invite link"}
+          </button>
           <PresenceBadge
             presence="online"
             typing={false}
@@ -221,12 +238,6 @@ export function RoomClient({ rawCode }: { rawCode: string }) {
             tone="blue"
             label={peerStatusLabel}
           />
-          <button
-            onClick={handleShare}
-            className="sr-only"
-          >
-            {copied ? "Copied" : "Share link"}
-          </button>
         </div>
       </header>
 
@@ -295,6 +306,25 @@ function PresenceBadge({
       />
       {statusLabel}
     </div>
+  );
+}
+
+function LinkIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      fill="none"
+      className="h-3.5 w-3.5 shrink-0"
+    >
+      <path
+        d="M8.25 11.75 11.75 8.25m-5.1 5.1-1.06 1.06a3 3 0 0 1-4.24-4.24l3.18-3.18a3 3 0 0 1 4.24 0m2.48-2.48 1.06-1.06a3 3 0 0 1 4.24 4.24l-3.18 3.18a3 3 0 0 1-4.24 0"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+      />
+    </svg>
   );
 }
 
